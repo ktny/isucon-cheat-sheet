@@ -1,0 +1,23 @@
+Host isucon-bastion
+    HostName 157.112.64.197
+    Port 20340
+    User isucon
+    IdentityFile ~/.ssh/github_id_rsa
+
+Host isu01
+    HostName 10.161.97.101
+    ProxyJump isucon-bastion
+    User isucon
+    IdentityFile ~/.ssh/github_id_rsa
+
+Host isu02
+    HostName 10.161.97.102
+    ProxyJump isucon-bastion
+    User isucon
+    IdentityFile ~/.ssh/github_id_rsa
+
+Host isu03
+    HostName 10.161.97.103
+    ProxyJump isucon-bastion
+    User isucon
+    IdentityFile ~/.ssh/github_id_rsa

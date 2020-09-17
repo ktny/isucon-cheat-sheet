@@ -1,0 +1,15 @@
+[user]
+    name = ktny
+    email = katsunori.t10@gmail.com
+[alias]
+    ci = commit
+    co = checkout
+    st = status
+    br = branch
+    fe = fetch
+    aa = commit --amend -a --no-edit
+[core]
+    editor = vim -c \"set fenc=utf-8\"
+    autocrlf = input
+[color]
+    ui = auto
