@@ -13,6 +13,9 @@ use <database>;
 # テーブル
 show tables;
 desc <table>;
+
+# プロセス
+show full processlist;
 ```
 
 ## 実行計画の確認
