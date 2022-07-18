@@ -14,6 +14,9 @@ use <database>;
 show tables;
 desc <table>;
 
+# インデックス
+show index from <table>;
+
 # プロセス
 show full processlist;
 ```
@@ -50,10 +53,23 @@ index, ALLは改善の余地あり。
 - index: フルインデックススキャン。インデックス全体をスキャンする必要があるので遅い
 - ALL: フルテーブルスキャン。インデックスがまったく利用されていない。遅い
 
+### Extraで行われている処理がわかる
+
+- Using where:
+- Using filesort: MySQL内部のメモリ上でソートが行われている。インデックスでソートを行えるようにした方がよい
+- Backward index scan: 昇順に並んでいるインデックスを逆向きに読んだことを表す。降順インデックスを利用できる可能性がある
+
 ## インデックス
 
 ```sh
 # インデックス
 alter table <table> add index <idx_name>(<column>);
+alter table <table> drop index <idx_name>;
+
+# 複合インデックス
+alter table <table> add index <idx_name>(<column>, <column>);
+
+# 降順インデックス（複合インデックスと組み合わせることで第1カラムは昇順、第2カラムは降順ソートのときなどにより効果が高い）
+alter table <table> add index <idx_name>(<column>, <column> desc);
 ```
  
