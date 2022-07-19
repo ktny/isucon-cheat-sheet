@@ -6,9 +6,10 @@ echo "start deploy app ${USER}"
 # 配置先
 # sqldest=/home/isucon/webapp/sql/
 # godest=/home/isucon/webapp/go/
-nodedest=/home/isucon/webapp/node/
+nodedest=/home/isucon/private_isu/webapp/node/
 
-for server in isu01 isu03; do
+# for server in isu01 isu03; do
+for server in private-isu; do
     # deploy db
     # ssh $server "sudo systemctl stop mariadb"
     # ssh $server "sudo rm -f /var/log/mysql/mysql-slow.log"
