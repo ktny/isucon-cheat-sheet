@@ -76,6 +76,41 @@ ngx_http_gzip_static_moduleにより、あらかじめ`gzip -k <file>`で圧縮�
 ngx_http_gunzip_moduleにより、元ファイルを残す必要もなくなる（元ファイルのディスク容量を節約できる）。
 静的ファイルは事前にgzip圧縮しておいた方がよい。動的なものは事前にはできないのでレスポンス時のgzip圧縮と併用する。
 
+### 静的ファイル配信の直接配信
+
+```conf
+server {
+  location /image/ {
+      root /home/isucon/private_isu/webapp/public/;
+      try_files $uri @app; # public配下に画像があれば直接配信、なければアップストリームサーバに転送
+  }
+
+  location @app {
+      proxy_pass http://localhost:8000;
+  }
+}
+```
+
+- locationで区切られた特定のパスへのリクエストはいきなりアップストリームサーバに転送せず静的ファイルを探しに行くようにする
+
+### HTTPヘッダー設定でのクライアントキャッシュ
+
+```conf
+server {
+  location /image/ {
+    root /home/isucon/private_isu/webapp/public/;
+    expires 1d; # Cache-Control: max-age=86400がレスポンスされる
+    etag off; # Last-Modifiedだけで十分なのでETagはOFFにする
+  }
+}
+```
+
+- 初回、キャッシュが存在しない場合はLast-Modified, ETagのいずれかがレスポンスされるのでブラウザはそれを記憶しておく
+- キャッシュ期限切れ後はリクエストヘッダにIf-Modified-Since, If-None-Matchを付与する
+  - If-Modified-Sinceには記憶していたLast-Modified, If-None-Matchには記憶していたETagを付与する
+  - コンテンツに変化がなければ304 Not Modifiedをレスポンスする（転送量の節約になる）
+  - コンテンツに変化があれば新しいコンテンツデータとLast-Modified, ETagをレスポンスする
+
 ### アップストリームサーバとのコネクション管理
 
 ```conf

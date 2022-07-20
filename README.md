@@ -59,15 +59,24 @@ ISUCON参戦時に見るやつ
 ## リバースプロキシ
 
 - ログ解析
-- 静的ファイル配信の圧縮、効率化
-- アプリケーションとの接続方法の効率化（ソケットの利用など）
+- 静的ファイル配信の直接配信
+- レスポンスボディの圧縮
+- HTTPヘッダー設定でのクライアントキャッシュ
+- アップストリームサーバとのコネクション管理
 
 ## アプリケーション
 
 - N+1問題
-    - IN句に渡す値の数が多すぎるとエラーになる: max_allowed_packetを上げる
-    - 狙ったインデックスが使われなかったりする: eq_range_index_dive_limitで動作を変更できる（INに含まれる値の件数がeq_range_index_dive_limit以下であればインデックスを用いた実行計画を正確に見積もろうとする）
-- pprof
+    - IN句に渡す値の数が多すぎるとエラーになる: nginxのmax_allowed_packetを上げる
+    - 狙ったインデックスが使われなかったりする: nginxのeq_range_index_dive_limitで動作を変更できる（INに含まれる値の件数がeq_range_index_dive_limit以下であればインデックスを用いた実行計画を正確に見積もろうとする）
+- HTTPClient（リバースプロキシからアップストリームサーバではなく、クライアントからwebサーバにおける各言語のライブラリ実装）
+    - 同一ホストへのコネクションを使い回す (http.Agent.keepalive)
+    - 適切なタイムアウトを設定する (timeout)。高負荷なリクエストはアプリケーションサーバのメモリを無駄に占有するので早めに落とした方がいい
+    - 同一ホストに大量のリクエストを送る場合、対象ホストへのコネクション数の制限を確認する (http.Agent.maxSockets)
+    - Nodejs: [axios](https://axios-http.com/docs/req_config)
+    - Nodejs: [http.agent](https://nodejs.org/api/http.html#class-httpagent)
+
+
 
 ## OS
 
@@ -89,6 +98,6 @@ ISUCON参戦時に見るやつ
     - ジョブキュー
     - DBのテーブル分割
 
-# 最後にやること
+# その他
 
-- ログ・計測関連のオフ
+- 開発用の設定で冗長なログを出力しない
