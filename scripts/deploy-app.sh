@@ -6,7 +6,7 @@ echo "start deploy app ${USER}"
 # for server in isu01 isu03; do
 for server in isucon11q; do
     cd ./webapp/nodejs
-    # npm ci
+    npm ci
     tsc
     cd ../
     tar zcf isucon.tar.gz ./nodejs
