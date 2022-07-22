@@ -125,3 +125,14 @@ select straight_join * from <tableA> join <tableB>...;
 - サイズが8KB未満の場合はBLOBではなくVARCHARを使う。メモリ効率化になるため
 - 長い文字列カラムを多くのクエリで取得しない場合、別テーブルに移し必要なときだけJOINして取得する
 - 長い文字列カラムの同等性を確保したい場合、文字列カラム自体ではなくMD5()などでハッシュ化した値と同等性をテストする
+
+## DBを外部から接続できるようにし別サーバに分割する
+
+- `bind-address=0.0.0.0`を設定し外部接続可能にする
+- MySQLを再起動し設定を反映する
+- 外部接続可能なユーザーを作成し権限を与える
+
+```sql
+CREATE USER `isucon`@`192.168.%` IDENTIFIED BY 'isucon';
+GRANT ALL PRIVILEGES ON `isucondition`.* TO `isucon`@`192.168.%`;
+```
