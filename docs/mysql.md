@@ -136,3 +136,17 @@ select straight_join * from <tableA> join <tableB>...;
 CREATE USER `isucon`@`192.168.%` IDENTIFIED BY 'isucon';
 GRANT ALL PRIVILEGES ON `isucondition`.* TO `isucon`@`192.168.%`;
 ```
+
+## その他便利な機能
+
+### Generated Column
+
+- 定義した式にしたがって値を生成しカラムのように扱う仕組み
+- VIRTUALとSTOREDがある（デフォルトVIRTUAL）
+- VIRTUALは常に再計算するビューのようなもの、STOREDは実際の値が保存される
+- セカンダリインデックスはVIRTUALでもOKだが、主キーや全文検索インデックスはSTOREDである必要がある
+
+```sql
+CREATE TABLE <table> (<column> <datatype> [GENERATED ALWAYS] AS 式 [ VIRTUAL | STORED ]) 
+ALTER TABLE <table> ADD COLUMN <column> <datatype> [GENERATED ALWAYS] AS 式 [ VIRTUAL | STORED ]
+```
