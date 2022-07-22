@@ -138,6 +138,8 @@ server {
 
 ### 不要なアクセスを弾く
 
+[ISUCON10 botからのリクエスト](https://gist.github.com/progfay/25edb2a9ede4ca478cb3e2422f1f12f6#bot-%E3%81%8B%E3%82%89%E3%81%AE%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88)
+
 ```conf
 map $http_user_agent $is_bot {
   default 0;
